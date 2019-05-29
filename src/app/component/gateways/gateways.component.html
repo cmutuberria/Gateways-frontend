@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col l7">
+    <div class="card">
+      <div class="card-title center">
+       <strong> Gateways </strong><span class=" badge ">
+         {{gateways.length}} Gateways</span>
+      </div>
+      <div class="card-content">      
+      <table class="responsive-table highlight fold-table" >
+        <thead>
+        <th >Name</th>
+        <th >IP V4</th>
+        <th >Devices</th>
+        <th ></th>
+        </thead>
+        <tbody>
+        <tr class="view" *ngFor="let gateway of gateways" >
+          <td>{{gateway.name}}</td>
+          <td>{{gateway.ipv4}}</td>
+          <td>{{gateway.devices?gateway.devices.length:0}}</td>
+          <!--<td><a routerLink="detail/{{occupation.id}}" (click)="this.preloadService.fireLoading()">-->
+          <td class="right">
+            <a routerLink="detail/{{gateway._id}}">
+              <i class="material-icons" (click)="details(gateway)">visibility</i>
+            </a>
+            <a><i class="material-icons" (click)="select(gateway)">edit</i></a>
+            <a><i class="material-icons" (click)="delete(gateway._id)">delete</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+  <div class="col l5">
+    <div class="card">
+      <div class="card-content">               
+        <form #gatewayForm = "ngForm" (ngSubmit)="saveGateway(gatewayForm)">
+          <input type="hidden" name="_id"  [(ngModel)]="gatewaySelected._id">
+          <div class="row">
+            <div class="input-field col-s12">
+              <input #name="ngModel" type="text" name="name"  [(ngModel)]="gatewaySelected.name"
+                     placeholder="Enter The Name" required>
+              <div class="red-text" *ngIf="name.touched&&!name.valid">
+                <div *ngIf="name.errors.required" class="right">
+                  Name is required.
+                </div>
+              </div>
+            </div>
+            <div class="input-field col-s12">
+              <input #ipv4="ngModel" type="text" name="ipv4" [(ngModel)]="gatewaySelected.ipv4"
+                     placeholder="Enter Ip V4 Address" required
+                     pattern="^(\d){1,3}\.(\d){1,3}\.(\d){1,3}\.(\d){1,3}$">
+              <div class="red-text" *ngIf="ipv4.touched&&!ipv4.valid"> 
+                <div *ngIf="ipv4.errors.required" class="right">
+                  IP V4 address is required.
+                </div>
+                <div *ngIf="ipv4.errors.pattern" class="right">
+                  Invalid IP V4 address.
+                </div>
+                <div *ngIf="ipv4.errors.server" class="right">
+                  {{ipv4.errors.message}}
+                </div>
+              </div>
+            </div>
+          </div>
+            <div class="card-action">
+              <div class="input-field col-s12">
+                <button class="btn right" style="margin-left: 2px;" (click)="resetForm(gatewayForm)">Clean</button>
+                <button class="btn right" [disabled]="!gatewayForm.valid">Save</button>
+              </div>
+            </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="gateways.length>0">
+</div>

@@ -1,0 +1,79 @@
+
+<div class="row">
+  <div class="col s7">
+    <div class="card">
+      <div class="card-title center">
+       <strong> Devices - {{gateway.name}} - {{gateway.ipv4}}</strong>
+      </div>
+      <div class="card-content">
+        <table class="responsive-table highlight fold-table" *ngIf="gateway?.devices">
+          <thead>
+            <tr>
+              <th>Vendor</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="view" *ngFor="let device of gateway.devices">
+              <td>{{device.vendor}}</td>
+              <td>{{device.date | date:'longDate'}}</td>
+              <td>{{device.status?"Enable":"Disable" }}</td>
+
+              <td class="right">
+                <a><i class="material-icons" (click)="select(device)">edit</i></a>
+                <a><i class="material-icons" (click)="delete(device._id)">delete</i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col s5">
+    <div class="card">
+      <div class="card-content">
+        <form #deviceForm="ngForm" (ngSubmit)="saveDevice(deviceForm)">
+          <input type="hidden" name="_id" [(ngModel)]="deviceSelected._id">
+          <input type="hidden" name="gateway_id" [(ngModel)]="gateway._id">
+          <input type="hidden" name="date" [(ngModel)]="deviceSelected.date">
+          <div class="row">
+            <div class="input-field col-s12">
+              <input #vendor="ngModel" type="text" name="vendor" [(ngModel)]="deviceSelected.vendor"
+                placeholder="Enter The Vendor" required>
+              <div class="red-text" *ngIf="vendor.touched&&!vendor.valid">
+                <div *ngIf="vendor.errors.required" class="right">
+                  Vendor is required.
+                </div>
+              </div>
+            </div>
+            <p class="col s6">
+              <label>
+                <input #status="ngModel" name="status" type="radio" [(ngModel)]="deviceSelected.status"
+                  [value]="true" />
+                <span>Enable</span>
+              </label>
+            </p>
+            <p class="col s6">
+              <label>
+                <input #status="ngModel" name="status" type="radio" [(ngModel)]="deviceSelected.status"
+                  [value]="false" />
+                <span>Disable</span>
+              </label>
+            </p>
+          </div>
+
+          <div class="card-action">
+            <div class="input-field col-s12">
+              <button class="btn right" style="margin-left: 2px;" (click)="resetForm(deviceForm)">Clean</button>
+              <button class="btn right"
+                [disabled]="(!deviceSelected._id&&gateway.devices?.length>=10)||!deviceForm.valid">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <button class="btn right" (click)="goBack()">Back</button>
+  </div>
+</div>

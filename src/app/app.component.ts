@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { PreloadService } from './services/preload.service';
+
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'angular7';
+  title = 'Gateways Web';
+
+  constructor(public preloadService: PreloadService) {
+  }
+  
+  
 }
